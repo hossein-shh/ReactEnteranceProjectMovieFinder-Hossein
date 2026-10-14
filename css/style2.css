@@ -1,0 +1,403 @@
+/* ==============================
+   Reset & Base
+============================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #000000;
+  --bg-card: #1a1a1a;
+  --text: #ffffff;
+  --text-muted: #999999;
+  --text-secondary: #cccccc;
+  --accent: #f5c518;
+  --border: #333333;
+  --radius: 10px;
+  --font: 'Inter', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 82px 0 82px;
+}
+
+/* ==============================
+   Header
+============================== */
+.header {
+  background: #000;
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  /* padding-bottom: 16px;  */
+  
+}
+
+.header-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 64px;
+  max-width: 1440px;
+  margin: 0 auto;
+  
+}
+
+.logo img {
+  height: 36px;
+  width: auto;
+  border-radius: 4px;
+}
+
+.search-box {
+  flex: 1;
+  max-width: 600px;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 44px 0 16px;
+  background: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 24px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #777;
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+}
+
+.search-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  display: flex;
+}
+
+.genres-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: #fff;
+}
+
+.genres-btn:hover {
+  background: #1f1f1f;
+}
+
+/* ==============================
+   Detail Page Layout
+============================== */
+.main {
+  padding-top: 32px;
+  padding-bottom: 60px;
+}
+
+.detail-container {
+  max-width: 1440px;
+}
+
+.intro-section{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 64px;
+}
+
+/* Title + Rating row */
+.detail-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 24px;
+
+}
+
+.detail-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.detail-meta {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.detail-rating-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1f1f1f;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.detail-rating-badge .star {
+  color: var(--accent);
+}
+
+.detail-rating-badge .votes {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 13px;
+}
+
+/* Poster + Info */
+.detail-main {
+  display: flex;
+  max-width: 100%;
+  gap: 24px;
+  margin-bottom: 48px;
+  /* padding: 0 64px; */
+}
+
+.detail-poster {
+  flex-shrink: 0;
+  width: 280px;
+}
+
+.poster-placeholder {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: #2a2a2a;
+  border-radius: 8px;
+}
+
+.detail-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.info-label {
+  width: 80px;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding-top: 2px;
+}
+
+.info-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.info-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 5px 14px;
+  background: #2a2a2a;
+  border-radius: 16px;
+  font-size: 13px;
+  color: #ddd;
+}
+
+/* Scene images */
+.detail-images {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  overflow-x: auto;
+}
+
+.scene-img {
+  width: 180px;
+  height: 100px;
+  background: #2a2a2a;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+/* ==============================
+   Cast Section
+============================== */
+.cast-section {
+  margin-top: 20px;
+}
+
+.cast-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cast-title .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+.cast-card {
+  text-align: center;
+}
+
+.cast-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #2a2a2a;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.cast-name {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.cast-character {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ==============================
+   Footer
+============================== */
+.footer {
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ==============================
+   Responsive
+============================== */
+@media (max-width: 1000px) {
+  .detail-main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .detail-poster {
+    width: 240px;
+  }
+
+  .info-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .info-label {
+    width: auto;
+  }
+
+  .cast-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .detail-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detail-title {
+    font-size: 28px;
+  }
+
+  .cast-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .header-inner {
+    gap: 12px;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cast-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-poster {
+    width: 100%;
+    max-width: 220px;
+  }
+}
