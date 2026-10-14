@@ -16,7 +16,7 @@
   --text-muted: #999999;
   --accent: #f5c518;
   --border: #333333;
-  --radius: 8px;
+  --radius: 10px;
   --font: 'Inter', sans-serif;
 }
 
@@ -57,15 +57,17 @@ button {
 }
 
 /* ==============================
-   Header
+   Header (overlay on hero)
 ============================== */
 .header {
-  background: #000;
-  border-bottom: 1px solid var(--border);
-  height: 90px;
-  position: sticky;
+  position: absolute;
   top: 0;
-  z-index: 100;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  padding: 16px 82px;
+  background: transparent;
+  z-index: 10;
 }
 
 .header-inner {
@@ -73,13 +75,16 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 64px;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .logo img {
   width: 116px;
   height: 58px;
   border-radius: 4px;
+  object-fit: contain;
 }
 
 .search-box {
@@ -98,6 +103,7 @@ button {
   color: white;
   font-size: 14px;
   outline: none;
+  transition: border-color 0.2s;
 }
 
 .search-input::placeholder {
@@ -113,8 +119,10 @@ button {
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #888;
+  color: #fff;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .genres-btn {
@@ -125,77 +133,95 @@ button {
   font-weight: 500;
   padding: 8px 12px;
   border-radius: 6px;
+  color: #fff;
+  background: transparent;
+  transition: background 0.15s;
 }
 
 .genres-btn:hover {
-  background: #1f1f1f;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* ==============================
-   Hero (ساده)
+   Main & Hero
 ============================== */
+.main {
+  position: relative;
+  z-index: 1;
+}
+
 .hero {
-  margin: 32px 0 40px;
-  padding: 48px 40px;
-  background: #111;
-  border-radius: 12px;
   min-height: 688px;
+  background: #111;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 82px;
+  max-width: 520px;
 }
 
 .hero-title {
-  font-size: 36px;
+  font-size: 42px;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  line-height: 1.2;
 }
 
 .hero-tags {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .tag {
-  padding: 4px 12px;
-  border: 1px solid #555;
+  padding: 4px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 16px;
   font-size: 12px;
+  font-weight: 500;
 }
 
 .hero-text {
-  color: var(--text-muted);
-  max-width: 500px;
-  margin-bottom: 8px;
+  color: #ccc;
+  max-width: 480px;
+  margin-bottom: 12px;
   font-size: 15px;
+  line-height: 1.6;
 }
 
 .hero-status {
   font-size: 13px;
-  color: #777;
+  color: #888;
 }
 
 /* ==============================
-   Movies Grid + Raw Card
+   Movies Grid + Cards
 ============================== */
+.movies-section {
+  padding-bottom: 40px;
+}
+
 .movies-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 24px;
-  padding: 0 64px 0 64px;
+  padding: 0 64px;
 }
 
-/* ===== کارت خام ===== */
 .movie-card {
   background: var(--bg-card);
   border-radius: var(--radius);
   overflow: hidden;
-  transition: transform 0.2s;
-  height: 440px;
   display: flex;
   flex-direction: column;
-  /* padding-bottom: 16px; */
-  gap: 16px;
+  height: 440px;
+  transition: transform 0.2s ease;
 }
 
 .movie-card:hover {
@@ -204,29 +230,28 @@ button {
 
 .card-poster {
   height: 304px;
-  background: #2a2a2a; /* رنگ خاکستری خام برای جای تصویر */
-  /* بعداً اینجا تصویر میاد */
+  background: #2a2a2a;
+  flex-shrink: 0;
 }
 
 .card-body {
-  /* padding: 12px; */
   display: flex;
   flex-direction: column;
-  padding-left: 20px;
-  padding-right: 20px;
-  gap: 16px;
+  justify-content: space-between;
+  flex: 1;
+  padding: 16px 20px;
+  gap: 12px;
 }
 
-.card-header{
+.card-header {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .card-title {
   font-size: 14px;
   font-weight: 600;
-  margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -235,7 +260,6 @@ button {
 .card-genres {
   font-size: 12px;
   color: var(--text-muted);
-  margin-bottom: 10px;
 }
 
 .card-footer {
@@ -255,7 +279,9 @@ button {
   background: #282828;
   border-radius: 16px;
   font-size: 12px;
-  color: #1C97FF;
+  font-weight: 500;
+  color: #ccc;
+  transition: background 0.15s, color 0.15s;
 }
 
 .card-btn:hover {
@@ -267,7 +293,7 @@ button {
    Footer
 ============================== */
 .footer {
-  margin-top: 60px;
+  margin-top: 40px;
   padding: 24px 0;
   border-top: 1px solid var(--border);
   text-align: center;
@@ -278,37 +304,84 @@ button {
 /* ==============================
    Responsive
 ============================== */
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .movies-grid {
     grid-template-columns: repeat(4, 1fr);
+    padding: 0 32px;
+  }
+
+  .header {
+    padding: 16px 32px;
+  }
+
+  .hero-content {
+    margin-left: 32px;
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .movies-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
   .hero-title {
-    font-size: 28px;
+    font-size: 32px;
+  }
+
+  .header-inner {
+    gap: 24px;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
+  .header {
+    padding: 12px 16px;
+    height: 70px;
+  }
+
+  .logo img {
+    width: 80px;
+    height: auto;
+  }
+
   .header-inner {
     gap: 12px;
+  }
+
+  .genres-btn span {
+    /* keep text */
   }
 
   .movies-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+    padding: 0 16px;
   }
 
   .hero {
-    padding: 32px 20px;
+    min-height: 420px;
+  }
+
+  .hero-content {
+    margin-left: 16px;
+    margin-right: 16px;
   }
 
   .hero-title {
     font-size: 24px;
+  }
+
+  .movie-card {
+    height: auto;
+  }
+
+  .card-poster {
+    height: 220px;
+  }
+}
+
+@media (max-width: 400px) {
+  .movies-grid {
+    grid-template-columns: 1fr;
   }
 }
