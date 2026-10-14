@@ -66,7 +66,7 @@ button {
   position: sticky;
   top: 0;
   z-index: 100;
-  /* padding-bottom: 16px;  */
+  padding: 16px 82px; 
   
 }
 
@@ -163,7 +163,7 @@ button {
   justify-content: space-between;
   margin-bottom: 24px;
   gap: 24px;
-
+  /* position: relative; */
 }
 
 .detail-title {
@@ -188,6 +188,9 @@ button {
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
+  /* position: absolute;
+  bottom: 0;
+  right: 0; */
 }
 
 .detail-rating-badge .star {
@@ -226,6 +229,7 @@ button {
   min-width: 0;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 20px;
 }
 
@@ -267,8 +271,7 @@ button {
 /* Scene images */
 .detail-images {
   display: flex;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 24px;
   overflow-x: auto;
 }
 
@@ -284,13 +287,17 @@ button {
    Cast Section
 ============================== */
 .cast-section {
-  margin-top: 20px;
+  /* margin-top: 20px; */
+  padding: 0 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .cast-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 24px;
+  font-size: 28px;
+  font-weight: 400;
+  /* margin-bottom: 24px; */
   display: flex;
   align-items: center;
   gap: 10px;
@@ -307,11 +314,11 @@ button {
 .cast-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
+  gap: 45px;
 }
 
 .cast-card {
-  text-align: center;
+  text-align: left;
 }
 
 .cast-photo {
