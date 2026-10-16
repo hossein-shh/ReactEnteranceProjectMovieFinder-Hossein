@@ -702,3 +702,69 @@ button {
 .genre-movie-card:hover {
   background: #222;
 }
+
+.search-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #1a1a1a;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.search-dropdown.active {
+  display: block;
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.search-item:hover {
+  background: #2a2a2a;
+}
+
+.search-item img {
+  width: 40px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #333;
+}
+
+.search-item-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.search-item-genres {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.search-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 40px 20px;
+}
+
+.search-results-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.search-results-title span {
+  color: var(--accent);
+}

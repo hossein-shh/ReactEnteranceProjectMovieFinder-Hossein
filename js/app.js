@@ -1,6 +1,7 @@
 import { getRoute, navigate, onRouteChange } from './router.js';
 import {
   getPopularMovies,
+  searchMovies,
   getMovieDetails,
   getGenres,
   getMoviesByGenre,
@@ -8,9 +9,13 @@ import {
 } from './api.js';
 
 const app = document.getElementById('app');
+const searchInput = document.getElementById('search-input');
+const searchDropdown = document.getElementById('search-dropdown');
+const searchBtn = document.getElementById('search-btn');
 const genresBtn = document.getElementById('genres-btn');
 
 let genresCache = null;
+let searchTimeout = null;
 
 function showLoading() {
   if (!app) return;
@@ -20,6 +25,11 @@ function showLoading() {
 function showError(message) {
   if (!app) return;
   app.innerHTML = '<div class="state-message"><h2>Something went wrong</h2><p>' + message + '</p></div>';
+}
+
+function showEmpty(message) {
+  if (!app) return;
+  app.innerHTML = '<div class="state-message"><h2>No results found</h2><p>' + message + '</p></div>';
 }
 
 function attachCardClicks() {
@@ -37,6 +47,23 @@ async function loadGenres() {
   return genresCache;
 }
 
+function movieCardHTML(m) {
+  const genres = Array.isArray(m.genres) ? m.genres.slice(0, 2).join(' / ') : '';
+  const poster = getPosterUrl(m.poster);
+  let html = '<article class="movie-card" data-id="' + m.id + '">';
+  html += '<div class="card-poster"><img src="' + poster + '" alt="" loading="lazy"></div>';
+  html += '<div class="card-body">';
+  html += '<div class="card-header">';
+  html += '<h3 class="card-title">' + (m.title || '') + '</h3>';
+  html += '<p class="card-genres">' + genres + '</p>';
+  html += '</div>';
+  html += '<div class="card-footer">';
+  html += '<span class="card-rating">★ ' + (m.imdb_rating || '') + '</span>';
+  html += '<button class="card-btn">View Info</button>';
+  html += '</div></div></article>';
+  return html;
+}
+
 async function renderHome(page) {
   showLoading();
   try {
@@ -44,20 +71,7 @@ async function renderHome(page) {
     const movies = data.results || [];
     let html = '<div class="container"><div class="movies-grid">';
     for (let i = 0; i < movies.length; i++) {
-      const m = movies[i];
-      const genres = Array.isArray(m.genres) ? m.genres.slice(0, 2).join(' / ') : '';
-      const poster = getPosterUrl(m.poster);
-      html += '<article class="movie-card" data-id="' + m.id + '">';
-      html += '<div class="card-poster"><img src="' + poster + '" alt="" loading="lazy"></div>';
-      html += '<div class="card-body">';
-      html += '<div class="card-header">';
-      html += '<h3 class="card-title">' + (m.title || '') + '</h3>';
-      html += '<p class="card-genres">' + genres + '</p>';
-      html += '</div>';
-      html += '<div class="card-footer">';
-      html += '<span class="card-rating">★ ' + (m.imdb_rating || '') + '</span>';
-      html += '<button class="card-btn">View Info</button>';
-      html += '</div></div></article>';
+      html += movieCardHTML(movies[i]);
     }
     html += '</div></div>';
     app.innerHTML = html;
@@ -167,6 +181,105 @@ async function renderGenre(genreId, page) {
   }
 }
 
+async function renderSearch(query, page) {
+  if (!query || !query.trim()) {
+    navigate('/');
+    return;
+  }
+  showLoading();
+  try {
+    const data = await searchMovies(query, page);
+    const movies = data.results || [];
+    if (movies.length === 0) {
+      showEmpty('No movies found for “' + query + '”');
+      return;
+    }
+    let html = '<div class="search-results-header">';
+    html += '<h1 class="search-results-title">Results for: <span>' + query + '</span></h1>';
+    html += '<span class="titles-count">' + (data.total_results || movies.length) + ' titles</span>';
+    html += '</div>';
+    html += '<div class="container"><div class="movies-grid">';
+    for (let i = 0; i < movies.length; i++) {
+      html += movieCardHTML(movies[i]);
+    }
+    html += '</div></div>';
+    app.innerHTML = html;
+    attachCardClicks();
+  } catch (err) {
+    showError(err.message || 'Search failed');
+  }
+}
+
+async function handleSearchInput() {
+  const q = searchInput.value.trim();
+  if (q.length < 2) {
+    searchDropdown.classList.remove('active');
+    searchDropdown.innerHTML = '';
+    return;
+  }
+  try {
+    const data = await searchMovies(q, 1);
+    const items = (data.results || []).slice(0, 6);
+    if (items.length === 0) {
+      searchDropdown.innerHTML = '<div class="search-item"><div class="search-item-info"><div class="search-item-title">No results</div></div></div>';
+    } else {
+      let html = '';
+      for (let i = 0; i < items.length; i++) {
+        const m = items[i];
+        html += '<div class="search-item" data-id="' + m.id + '">';
+        html += '<img src="' + getPosterUrl(m.poster) + '" alt="">';
+        html += '<div class="search-item-info">';
+        html += '<div class="search-item-title">' + (m.title || '') + '</div>';
+        html += '<div class="search-item-genres">' + (Array.isArray(m.genres) ? m.genres.slice(0, 2).join(' / ') : '') + '</div>';
+        html += '</div></div>';
+      }
+      searchDropdown.innerHTML = html;
+    }
+    searchDropdown.classList.add('active');
+    searchDropdown.querySelectorAll('.search-item[data-id]').forEach(function (item) {
+      item.addEventListener('click', function () {
+        searchDropdown.classList.remove('active');
+        searchInput.value = '';
+        navigate('/movie/' + item.dataset.id);
+      });
+    });
+  } catch (err) {
+    searchDropdown.classList.remove('active');
+  }
+}
+
+if (searchInput) {
+  searchInput.addEventListener('input', function () {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(handleSearchInput, 350);
+  });
+  searchInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      const q = searchInput.value.trim();
+      if (q) {
+        searchDropdown.classList.remove('active');
+        navigate('/search?q=' + encodeURIComponent(q));
+      }
+    }
+  });
+}
+
+if (searchBtn) {
+  searchBtn.addEventListener('click', function () {
+    const q = searchInput.value.trim();
+    if (q) {
+      searchDropdown.classList.remove('active');
+      navigate('/search?q=' + encodeURIComponent(q));
+    }
+  });
+}
+
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('.search-box')) {
+    searchDropdown.classList.remove('active');
+  }
+});
+
 if (genresBtn) {
   genresBtn.addEventListener('click', async function () {
     try {
@@ -184,6 +297,8 @@ function handleRoute() {
     renderMovie(route.id);
   } else if (route.name === 'genre') {
     renderGenre(route.id, route.page || 1);
+  } else if (route.name === 'search') {
+    renderSearch(route.query, route.page || 1);
   } else {
     renderHome(route.page || 1);
   }
