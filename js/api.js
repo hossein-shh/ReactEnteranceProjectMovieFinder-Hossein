@@ -1,4 +1,5 @@
 const API_BASE = 'https://moviesapi.ir/api/v1';
+const PLACEHOLDER = 'https://via.placeholder.com/500x750/1a1a1a/666?text=No+Poster';
 
 async function fetchAPI(endpoint) {
   const response = await fetch(API_BASE + endpoint);
@@ -6,6 +7,12 @@ async function fetchAPI(endpoint) {
     throw new Error('Request failed');
   }
   return response.json();
+}
+
+export function getPosterUrl(poster) {
+  if (!poster) return PLACEHOLDER;
+  if (poster.startsWith('http')) return poster;
+  return 'https://moviesapi.ir/' + poster;
 }
 
 export async function getPopularMovies(page = 1) {
