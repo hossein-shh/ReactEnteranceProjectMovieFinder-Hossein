@@ -687,3 +687,18 @@ button {
 .movie-card:hover {
   transform: translateY(-4px);
 }
+
+.g-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.genre-movie-card {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.genre-movie-card:hover {
+  background: #222;
+}
